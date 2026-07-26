@@ -19,7 +19,7 @@ esp-rtos = { version = "0.3.0", features = [
   "esp32",
 ] }
 
-defmt = "1.0.1"
+defmt = "1.1.1"
 esp-bootloader-esp-idf = { version = "0.5.0", features = ["defmt", "esp32"] }
 
 embassy-net = { version = "0.9.1", features = [
@@ -64,16 +64,18 @@ smoltcp = { version = "0.13.0", default-features = false, features = [
 
 critical-section = "1.2.0"
 static_cell = "2.1.1"
-hub75-framebuffer = { git = "https://github.com/liebman/hub75-framebuffer.git" }
-esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", features = [
+esp-hub75 = { version = "0.13.0", features = [
   "esp32",
   "defmt",
-  "blank-delay-8",
+  "skip-black-pixels",
   "tail-closes-latch",
+  "trail-blank-16",
+  "lead-blank-16",
 ] }
 embedded-graphics = "0.8.2"
 embassy-sync = "0.8.0"
 heapless = "0.9.3"
+defmt-rtt = "1.3.0"
 
 
 # For fine tuning these settings, please refer to https://doc.rust-lang.org/cargo/reference/profiles.html
@@ -87,3 +89,8 @@ codegen-units = 1 # LLVM can perform better optimizations using a single thread
 debug = 2         # prefer slower builds but better debugging experience
 lto = 'fat'
 opt-level = 's'
+
+[features]
+default = ["defmt"]
+defmt = ["esp-hub75/defmt"]
+log = ["esp-hub75/log"]

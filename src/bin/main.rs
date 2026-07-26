@@ -1,3 +1,32 @@
+//! Embassy "async" example driving a 64x64 HUB75 display using the I2S
+//! peripheral of an `esp32` on an ESP32 Trinity board, with 16-bit
+//! bitplane framebuffer (no latch circuit).
+//!
+//! NOTE: This example would normally run on a second core, but the `esp32`
+//!       has a bug: https://github.com/esp-rs/esp-hal/issues/2369
+//!       and when thats resolved I'll move this back to the second core.
+//!
+//! This example draws a simple gradient on the display and shows the refresh
+//! rate and render rate plus a simple counter.
+//!
+//! Folowing pins are used (ESP32 Trinity):
+//! - R1  => GPIO25
+//! - G1  => GPIO26
+//! - B1  => GPIO27
+//! - R2  => GPIO14
+//! - G2  => GPIO12
+//! - B2  => GPIO13
+//! - A   => GPIO23
+//! - B   => GPIO19
+//! - C   => GPIO5
+//! - D   => GPIO17
+//! - E   => GPIO18
+//! - OE  => GPIO15
+//! - CLK => GPIO16
+//! - LAT => GPIO4
+//!
+//! Note that you most likely need level converters 3.3v to 5v for all HUB75
+//! signals
 #![no_std]
 #![no_main]
 #![allow(clippy::uninlined_format_args)]
@@ -6,7 +35,10 @@ use core::fmt;
 use core::sync::atomic::AtomicU32;
 use core::sync::atomic::Ordering;
 
-use defmt::*;
+#[cfg(feature = "defmt")]
+use defmt::info;
+#[cfg(feature = "defmt")]
+use defmt_rtt as _;
 use embassy_executor::Spawner;
 use embassy_executor::task;
 use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
@@ -35,9 +67,10 @@ use esp_hub75::Hub75;
 use esp_hub75::Hub75Pins16;
 use esp_hub75::framebuffer::bitplane::plain::DmaFrameBuffer;
 use esp_hub75::framebuffer::compute_rows;
-use esp_println as _;
 use esp_rtos::embassy::InterruptExecutor;
 use heapless::String;
+#[cfg(feature = "log")]
+use log::info;
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
@@ -58,7 +91,7 @@ static SIMPLE_COUNTER: AtomicU32 = AtomicU32::new(0);
 const ROWS: usize = 64;
 const COLS: usize = 64;
 const NROWS: usize = compute_rows(ROWS);
-const PLANES: usize = 7;
+const PLANES: usize = 6;
 
 const LINE1: i32 = ROWS as i32 - 1 - 14;
 const LINE2: i32 = ROWS as i32 - 1 - 7;
@@ -217,7 +250,7 @@ async fn hub75_task(
         pins,
         channel,
         hub75_tx_descriptors,
-        Rate::from_mhz(19),
+        Rate::from_mhz(8),
     )
     .expect("failed to create Hub75!")
     .into_async();
@@ -265,9 +298,19 @@ async fn hub75_task(
     }
 }
 
+unsafe extern "C" {
+    static _stack_end_cpu0: u32;
+    static _stack_start_cpu0: u32;
+}
+
 #[esp_rtos::main]
 async fn main(_spawner: Spawner) {
+    #[cfg(feature = "log")]
+    esp_println::logger::init_logger(log::LevelFilter::Info);
     info!("Main starting!");
+    info!("main: stack size:  {}", unsafe {
+        core::ptr::addr_of!(_stack_start_cpu0).offset_from(core::ptr::addr_of!(_stack_end_cpu0))
+    });
     info!("ROWS: {}", ROWS);
     info!("COLS: {}", COLS);
     info!("PLANES: {}", PLANES);
@@ -297,6 +340,7 @@ async fn main(_spawner: Spawner) {
     let hub75_peripherals = Hub75Peripherals {
         i2s: peripherals.I2S0.into(),
         dma_channel: peripherals.DMA_I2S0,
+        // ESP32 Trinity pin mappings
         red1: peripherals.GPIO25.degrade(),
         grn1: peripherals.GPIO26.degrade(),
         blu1: peripherals.GPIO27.degrade(),
