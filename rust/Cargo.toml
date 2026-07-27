@@ -69,8 +69,8 @@ esp-hub75 = { version = "0.13.0", features = [
   "defmt",
   "skip-black-pixels",
   "tail-closes-latch",
-  "trail-blank-16",
   "lead-blank-16",
+  "inter-row-blank-32",
 ] }
 embedded-graphics = "0.8.2"
 embassy-sync = "0.8.0"
@@ -94,3 +94,6 @@ opt-level = 's'
 default = ["defmt"]
 defmt = ["esp-hub75/defmt"]
 log = ["esp-hub75/log"]
+
+[patch.crates-io]
+esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", branch = "use-interrupts-for-continous-rendering" }
