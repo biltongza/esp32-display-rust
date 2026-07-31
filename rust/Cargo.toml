@@ -69,7 +69,8 @@ esp-hub75 = { version = "0.13.0", features = [
   "defmt",
   "skip-black-pixels",
   "tail-closes-latch",
-  "lead-blank-16",
+  "lead-blank-8",
+  "trail-blank-8",
   "inter-row-blank-32",
 ] }
 embedded-graphics = "0.8.2"

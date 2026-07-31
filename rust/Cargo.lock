@@ -166,9 +166,9 @@ checksum = "0b396d1f76d455557e1218ec8066ae14bba60b4b36ecd55577ba979f5db7ecaa"
 
 [[package]]
 name = "cordyceps"
-version = "0.3.4"
+version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "688d7fbb8092b8de775ef2536f36c8c31f2bc4006ece2e8d8ad2d17d00ce0a2a"
+checksum = "5b9ab7e0ca1d179628fa0172b2b97203c7fa0cd81be2448bd446fb9559ca9261"
 dependencies = [
  "loom",
  "tracing",
@@ -892,7 +892,7 @@ dependencies = [
 [[package]]
 name = "esp-hub75"
 version = "0.13.0"
-source = "git+https://github.com/liebman/esp-hub75.git?branch=use-interrupts-for-continous-rendering#1b459e7dc467d3cd767ac68dce7422cd18fa77ee"
+source = "git+https://github.com/liebman/esp-hub75.git?branch=use-interrupts-for-continous-rendering#4201b44262d7edfe0a84288f44e513bb3f231ba0"
 dependencies = [
  "critical-section",
  "defmt 1.1.1",
@@ -1412,7 +1412,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 [[package]]
 name = "hub75-framebuffer"
 version = "0.10.0"
-source = "git+https://github.com/liebman/hub75-framebuffer.git?branch=inter-row-blank#fdfb497bf8a74de251ae935be9cf230bda9dc1e0"
+source = "git+https://github.com/liebman/hub75-framebuffer.git?branch=inter-row-blank#76c5d34513db41771e794b22174f02ecec241836"
 dependencies = [
  "bitfield",
  "defmt 1.1.1",
