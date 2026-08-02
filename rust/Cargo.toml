@@ -98,4 +98,4 @@ defmt = ["esp-hub75/defmt"]
 log = ["esp-hub75/log"]
 
 [patch.crates-io]
-esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", branch = "use-interrupts-for-continous-rendering" }
+esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", rev = "6a560a53634fbd3875bf7352782deae5402a4385" }
