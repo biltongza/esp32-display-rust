@@ -891,8 +891,9 @@ dependencies = [
 
 [[package]]
 name = "esp-hub75"
-version = "0.13.0"
-source = "git+https://github.com/liebman/esp-hub75.git?rev=6a560a53634fbd3875bf7352782deae5402a4385#6a560a53634fbd3875bf7352782deae5402a4385"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb8c10182dc4c9051c574ef367ff794807c3dc2fe0cf08695c0c3b98d93806d6"
 dependencies = [
  "critical-section",
  "defmt 1.1.1",
