@@ -892,7 +892,7 @@ dependencies = [
 [[package]]
 name = "esp-hub75"
 version = "0.13.0"
-source = "git+https://github.com/liebman/esp-hub75.git?branch=use-interrupts-for-continous-rendering#4201b44262d7edfe0a84288f44e513bb3f231ba0"
+source = "git+https://github.com/liebman/esp-hub75.git?branch=use-interrupts-for-continous-rendering#c83e4b62d9a32bfa4c11a3e938cd440c284adede"
 dependencies = [
  "critical-section",
  "defmt 1.1.1",
@@ -1411,8 +1411,9 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "hub75-framebuffer"
-version = "0.10.0"
-source = "git+https://github.com/liebman/hub75-framebuffer.git?branch=inter-row-blank#76c5d34513db41771e794b22174f02ecec241836"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b409825d91b607b0bbc70fb13e22c88b185f6e0bd059b78f04d770aec18aa3af"
 dependencies = [
  "bitfield",
  "defmt 1.1.1",

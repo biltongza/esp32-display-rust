@@ -11,3 +11,4 @@ build-std = ["alloc", "core"]
 [env]
 # log level
 ESP_LOG = "INFO"
+DEFMT_LOG = "info"
