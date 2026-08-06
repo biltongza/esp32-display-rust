@@ -1412,7 +1412,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 [[package]]
 name = "hub75-framebuffer"
 version = "0.11.0"
-source = "git+https://github.com/liebman/hub75-framebuffer.git?branch=row-bcm#90ee440b4a201e22e26bb387405303923d67b00f"
+source = "git+https://github.com/liebman/hub75-framebuffer.git?branch=row-bcm#fcbe66276f237fcab370e802151682df0d4e42e3"
 dependencies = [
  "bitfield",
  "defmt 1.1.1",
