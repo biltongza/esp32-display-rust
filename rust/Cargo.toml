@@ -69,9 +69,8 @@ esp-hub75 = { version = "0.14.0", features = [
   "defmt",
   "skip-black-pixels",
   "tail-closes-latch",
-  "lead-blank-8",
-  "trail-blank-8",
-  "inter-row-blank-32",
+  "lead-blank-16",
+  "trail-blank-32",
   "circular-dma",
 ] }
 embedded-graphics = "0.8.2"
@@ -96,6 +95,7 @@ opt-level = 's'
 default = ["defmt"]
 defmt = ["esp-hub75/defmt"]
 log = ["esp-hub75/log"]
+defmt-rtt = []
 
-# [patch.crates-io]
-# esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", rev = "6a560a53634fbd3875bf7352782deae5402a4385" }
+[patch.crates-io]
+esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", branch = "row-bcm" }

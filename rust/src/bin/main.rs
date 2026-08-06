@@ -38,7 +38,7 @@ use core::sync::atomic::Ordering;
 
 #[cfg(feature = "defmt")]
 use defmt::info;
-#[cfg(feature = "defmt")]
+#[cfg(feature = "defmt-rtt")]
 use defmt_rtt as _;
 use embassy_executor::task;
 use embassy_executor::Spawner;
@@ -59,7 +59,7 @@ use esp_hal::interrupt::software::SoftwareInterruptControl;
 use esp_hal::interrupt::Priority;
 use esp_hal::time::Rate;
 use esp_hal::timer::timg::TimerGroup;
-use esp_hub75::framebuffer::bitplane::plain::DmaFrameBuffer;
+use esp_hub75::framebuffer::bitplane::plain::row::DmaFrameBuffer;
 use esp_hub75::framebuffer::compute_rows;
 use esp_hub75::Color;
 use esp_hub75::Hub75;
@@ -68,6 +68,8 @@ use esp_rtos::embassy::InterruptExecutor;
 use heapless::String;
 #[cfg(feature = "log")]
 use log::info;
+use esp_backtrace as _;
+use esp_println as _;
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
@@ -195,6 +197,8 @@ unsafe extern "C" {
 async fn main(_spawner: Spawner) {
     #[cfg(feature = "log")]
     esp_println::logger::init_logger(log::LevelFilter::Info);
+    let peripherals = esp_hal::init(esp_hal::Config::default().with_cpu_clock(CpuClock::max()));
+
     info!("Main starting!");
     info!("ROWS: {}", ROWS);
     info!("COLS: {}", COLS);
@@ -203,7 +207,7 @@ async fn main(_spawner: Spawner) {
     info!("main: stack size:  {}", unsafe {
         core::ptr::addr_of!(_stack_start_cpu0).offset_from(core::ptr::addr_of!(_stack_end_cpu0))
     });
-    let peripherals = esp_hal::init(esp_hal::Config::default().with_cpu_clock(CpuClock::max()));
+
     let sw_ints = SoftwareInterruptControl::new(peripherals.SW_INTERRUPT);
     let software_interrupt = sw_ints.software_interrupt2;
 
@@ -222,6 +226,11 @@ async fn main(_spawner: Spawner) {
     info!("fb1: {:?}", fb1);
 
     let tx_descriptors = esp_hub75::hub75_dma_descriptors!(FBType);
+    info!(
+        "DMA descriptors: {} ({} bytes)",
+        tx_descriptors.len(),
+        tx_descriptors.len() * core::mem::size_of::<esp_hal::dma::DmaDescriptor>()
+    );
 
     let pins = Hub75Pins16 {
         red1: peripherals.GPIO25.degrade(),
