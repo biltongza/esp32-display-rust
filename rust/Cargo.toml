@@ -98,4 +98,4 @@ log = ["esp-hub75/log"]
 defmt-rtt = []
 
 [patch.crates-io]
-esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", branch = "row-bcm" }
+esp-hub75 = { git = "https://github.com/liebman/esp-hub75.git", rev = "bef475ebc2f90606e784948af33de9636450248b" }
